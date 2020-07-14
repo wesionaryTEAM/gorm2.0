@@ -17,4 +17,5 @@ type AuthorRepository interface {
 	Save(author *Author) (*Author, error)
 	FindAll() ([]Author, error)
 	Delete (author *Author) error
+	Migrate() error
 }

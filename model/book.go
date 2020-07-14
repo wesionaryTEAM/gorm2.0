@@ -19,4 +19,5 @@ type BookRepository interface {
 	Save(book *Book) (*Book, error)
 	FindAll() ([]Book, error)
 	Delete(book *Book) error
+	Migrate() error
 }
