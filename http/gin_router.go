@@ -22,6 +22,10 @@ func (*ginRouter) POST(uri string, f func(c *gin.Context)) {
 	ginDispatcher.POST(uri, f)
 }
 
+func (*ginRouter) DELETE(uri string, f func(c *gin.Context)) {
+	ginDispatcher.DELETE(uri, f)
+}
+
 func (*ginRouter) SERVE(port string) {
 	_ = ginDispatcher.Run(port)
 }
