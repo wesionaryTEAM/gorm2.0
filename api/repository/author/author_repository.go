@@ -16,20 +16,21 @@ func NewAuthorRepository (db *gorm.DB) model.AuthorRepository {
 	}
 }
 
-func (a *AuthorRepository) Save(author *Author) (*Author, error) {
+func (a *AuthorRepository) Save(author *model.Author) (*model.Author, error) {
 	return author, a.DB.Create(author).Error
 }
 
-func (a *AuthorRepository) FindAll() ([]Author, error) {
+func (a *AuthorRepository) FindAll() ([]model.Author, error) {
 	var authors []model.Author
 	err := a.DB.Find(&authors).Error
 	return authors, err
 }
 
-func (a *AuthorRepository) 	Delete (author *Author) error {
+func (a *AuthorRepository) 	Delete (author *model.Author) error {
 	return a.DB.Delete(&author).Error
 }
 
 func (a *AuthorRepository) Migrate() error {
-	return a.DB.AutoMigrate(&model.User{}).Error
+	err := a.DB.AutoMigrate(&model.Author{})
+	return err
 }

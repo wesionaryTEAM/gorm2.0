@@ -1,5 +1,9 @@
 package model
 
+import (
+	"gorm.io/gorm"
+)
+
 //Model for Book
 type Book struct {
 	gorm.Model

@@ -1,5 +1,8 @@
 package model
 
+import (
+	"gorm.io/gorm"
+)
 //Model for Author
 type Author struct {
 	gorm.Model

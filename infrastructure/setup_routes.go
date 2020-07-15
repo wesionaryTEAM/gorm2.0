@@ -6,6 +6,7 @@ import (
 
 	// "gorm2.0/api/routes"
 	router "gorm2.0/http"
+	"gorm2.0/api/routes"
 	"github.com/gin-gonic/gin"
   "gorm.io/gorm"
 )
@@ -19,11 +20,11 @@ func SetupRoutes(db *gorm.DB) {
 		c.JSON(http.StatusOK, gin.H{"data": "Up and Running..."})
 	})
 
-	//Author Routers
-	// routes.AuthorRoutes(httpRouter.GROUP("/authors"),db)
+	// Author Routers
+	routes.AuthorRoutes(httpRouter.GROUP("/authors"),db)
 
-	//Book routes
-	// routes.BookRoutes(httpRouter.GROUP("/books"), db)
+	// Book routes
+	routes.BookRoutes(httpRouter.GROUP("/books"), db)
 
 	// Start the server
 	port := os.Getenv("SERVER_PORT")

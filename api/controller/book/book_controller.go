@@ -13,19 +13,19 @@ type BookController interface {
 	DeleteBook(c *gin.Context)
 }
 
-type BookController struct {
-	bookService model.bookService
+type bookController struct {
+	bookService model.BookService
 }
 
 //Constructor Function
-func NewBookController(service bookService) BookController {
-	return &BookController{
+func NewBookController(service model.BookService) BookController {
+	return &bookController{
 		bookService: service,
 	}
 }
 
 //GET
-func (b *BookController) GetBooks(c *gin.Context) {
+func (b *bookController) GetBooks(c *gin.Context) {
 	books, err := b.bookService.FindAll()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error while fetching the books"})
@@ -36,27 +36,27 @@ func (b *BookController) GetBooks(c *gin.Context) {
 }
 
 //POST 
-func (b *BookController) AddBook(c * gin.Context) {
+func (b *bookController) AddBook(c * gin.Context) {
 	var book model.Book
 	if err := c.ShouldBindJSON(&book); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	book, err := b.bookService.Create(&book)
+	b.bookService.Create(&book)
 
-	c.JSON(http.StatusOk, book)
+	c.JSON(http.StatusOK, book)
 }
 
 //DESTROY
-func (b *BookController) DeleteBook(c *gin.Context){
+func (b *bookController) DeleteBook(c *gin.Context){
 	var book model.Book
 	if err := c.ShouldBindJSON(&book); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	ErrOnDelete := b.bookService.Delete(book)
+	ErrOnDelete := b.bookService.Delete(&book)
 	if ErrOnDelete != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Could not delete the book"})
 		return 

@@ -8,30 +8,30 @@ import (
 
 var once sync.Once  
 
-type AuthorService struct {
+type authorService struct {
 	authorRepository model.AuthorRepository
 }
 
-var instance *AuthorService
+var instance *authorService
 
 //Constructor function
-func NewAuthorService(repository model.AuthorService) model.AuthorService {
+func NewAuthorService(repository model.AuthorRepository) model.AuthorService {
 	once.Do(func() {
-		instance = &AuthorService{
+		instance = &authorService{
 			authorRepository: repository,
 		}
 	})
 	return instance
 }
 
-func (a *AuthorService) Create(author *model.Author) (*model.Author, error) {
+func (a *authorService) Create(author *model.Author) (*model.Author, error) {
 	return a.authorRepository.Save(author)
 } 
 
-func (a *AuthorService) FindAll() ([]Author, error) {
+func (a *authorService) FindAll() ([]model.Author, error) {
 	return a.authorRepository.FindAll()
 }
 
-func (a *AuthorService) Delete(author *Author) error {
+func (a *authorService) Delete(author *model.Author) error {
 	return a.authorRepository.Delete(author)
 }

@@ -16,19 +16,25 @@ func NewBookRepository (db *gorm.DB) model.BookRepository {
 	}
 }
 
-func (b *BookRepository) Save(book *Book) (*Book, error) {
+func (b *BookRepository) Save(book *model.Book) (*model.Book, error) {
 	return book, b.DB.Create(&book).Error
 }
 
-func (b *BookRepository) FindAll() ([]Book, error) {
-	var books = model.Book
+func (b *BookRepository) FindAll() ([]model.Book, error) {
+	var books []model.Book
 	err := b.DB.Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return books, nil
 }
 
-func (b *BookRepository) Delete(book *Book) error {
-	return b.DB.Delete(&book).Error
+func (b *BookRepository) Delete(book *model.Book) error {
+	err := b.DB.Delete(&book).Error
+	return err
 }
 
 func (b *BookRepository) 	Migrate() error {
-	return b.DB.AutoMigrate(&model.User{}).Error
+	err := b.DB.AutoMigrate(&model.Book{})
+	return err
 }
