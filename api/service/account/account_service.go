@@ -6,7 +6,7 @@ import (
 	"gorm2.0/model"
 )
 
-var once sync.once
+var once sync.Once
 
 type AccountService struct {
 	accountRepository model.AccountRepository
@@ -24,14 +24,14 @@ func NewAccountService(repository model.AccountRepository) model.AccountService 
 	return instance
 }
 
-func (a *AccountService) Create(account *Account) (*Account, error) {
+func (a *AccountService) Create(account *model.Account) (*model.Account, error) {
 	return a.accountRepository.Save(account)
 }
 
-func (a *AccountService) FindAll() ([]Account, error) {
+func (a *AccountService) FindAll() ([]model.Account, error) {
 	return a.accountRepository.FindAll()
 }
 	
-func (a *AccountService) Delete(account *Account) error {
+func (a *AccountService) Delete(account *model.Account) error {
 	return a.accountRepository.Delete(account)
 }

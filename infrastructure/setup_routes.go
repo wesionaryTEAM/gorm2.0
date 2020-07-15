@@ -29,6 +29,9 @@ func SetupRoutes(db *gorm.DB) {
 	//Supplier Routes
 	routes.SupplierRoutes(httpRouter.GROUP("/suppliers"), db)
 
+	//Account Routes
+	routes.AccountRoutes(httpRouter.GROUP("/accounts"), db)
+
 	// Start the server
 	port := os.Getenv("SERVER_PORT")
 	httpRouter.SERVE(port)

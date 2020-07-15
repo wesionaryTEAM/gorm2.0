@@ -8,6 +8,7 @@ type Supplier struct {
 	gorm.Model //Provides CreatedAt and UpdatedAt
 	ID int64
 	Name string
+	Account Account //Supplier has one account
 }
 
 type SupplierService interface {

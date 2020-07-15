@@ -27,8 +27,8 @@ func NewAccountController(service model.AccountService) AccountController {
 //GET
 func (a *accountController) GetAccounts(c *gin.Context) {
 	accounts, err := a.accountService.FindAll()
-	if err !== nil {
-		C.JSON(http.StatusBadRequest, gin.H{"error": "Error while fetching the accounts"})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error while fetching the accounts"})
 		return
 	}
 

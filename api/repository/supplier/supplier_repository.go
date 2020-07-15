@@ -22,7 +22,7 @@ func (s *SupplierRepository) Save(supplier *model.Supplier) (*model.Supplier, er
 
 func (s *SupplierRepository) FindAll() ([]model.Supplier, error) {
 	var suppliers []model.Supplier
-	err := s.DB.Find(suppliers).Error
+	err := s.DB.Find(&suppliers).Error
 	if err != nil {
 		return nil, err
 	}
