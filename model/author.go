@@ -5,9 +5,10 @@ import (
 )
 //Model for Author
 type Author struct {
-	gorm.Model
+	gorm.Model //provides CreatedAt and UpdatedAt
 	ID int64 `json:"id"`
 	Name	string `json:"name"`
+	Books []Book //author has many books associated
 }
 
 type AuthorService interface {

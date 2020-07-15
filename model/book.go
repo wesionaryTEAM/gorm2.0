@@ -9,8 +9,10 @@ type Book struct {
 	gorm.Model
 	ID int64 `json:"id"`
 	Title string `json:"title"`
-	AuthorID int
-	Author Author `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	
+	//association for book belongs to author
+	AuthorID int 
+	Author Author `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` 
 }
 
 type BookService interface {
