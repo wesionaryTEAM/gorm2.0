@@ -24,14 +24,22 @@ func NewAuthorService(repository model.AuthorRepository) model.AuthorService {
 	return instance
 }
 
+//Create
 func (a *authorService) Create(author *model.Author) (*model.Author, error) {
 	return a.authorRepository.Save(author)
 } 
 
+//FindAll
 func (a *authorService) FindAll() ([]model.Author, error) {
 	return a.authorRepository.FindAll()
 }
 
+//Delete
 func (a *authorService) Delete(author *model.Author) error {
 	return a.authorRepository.Delete(author)
+}
+
+//FindById
+func (a *authorService) FindById(id int64) ([]model.Author, error) {
+	return a.authorRepository.FindById(id)
 }

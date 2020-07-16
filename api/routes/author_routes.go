@@ -23,5 +23,6 @@ func AuthorRoutes(route *gin.RouterGroup, db *gorm.DB) {
 	//Routes
 	route.GET("/", authorController.GetAuthors)
 	route.POST("/", authorController.AddAuthor)
+	route.POST("/findById", authorController.FindById)
 	route.DELETE("/", authorController.DeleteAuthor)
 }

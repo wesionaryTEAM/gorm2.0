@@ -6,7 +6,6 @@ import (
 
 type Account struct {
 	gorm.Model //Provides CreatedAt and UpdatedAt
-	ID int64
 	AccountNumber string `gorm:"unique;"`
 	SupplierID int
 }

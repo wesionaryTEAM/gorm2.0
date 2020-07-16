@@ -5,12 +5,14 @@ import (
 
 	"gorm2.0/model"
 	"github.com/gin-gonic/gin"
+	"gorm2.0/utils/request_utils"
 )
 
 type AuthorController interface {
 	GetAuthors(c *gin.Context)
 	AddAuthor(c *gin.Context)
 	DeleteAuthor(c *gin.Context)
+	FindById (c *gin.Context)
 }
 
 type authorController struct {
@@ -60,6 +62,22 @@ func (a *authorController) DeleteAuthor(c *gin.Context) {
 	if ErrOnDelete != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Could not delete the author"})
 		return 
+	}
+	c.JSON(http.StatusOK, author)
+}
+
+//FindById
+func (a *authorController) FindById(c *gin.Context) {
+	var findByIDStruct requestutils.FindById
+	
+	if err := c.ShouldBindJSON(&findByIDStruct); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+	}
+
+	author, ErrOnFindById := a.authorService.FindById(findByIDStruct.AuthorId)
+	if ErrOnFindById != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": ErrOnFindById.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, author)
 }

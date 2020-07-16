@@ -7,7 +7,6 @@ import (
 //Model for supplier
 type Supplier struct {
 	gorm.Model //Provides CreatedAt and UpdatedAt
-	ID int64 `json:"id";`
 	Name string `json:"name"`
 	Account Account //Supplier has one account
 }
