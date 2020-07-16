@@ -7,7 +7,7 @@ import (
 type Account struct {
 	gorm.Model //Provides CreatedAt and UpdatedAt
 	ID int64
-	AccountNumber string
+	AccountNumber string `gorm:"unique;"`
 	SupplierID int
 }
 
@@ -20,6 +20,6 @@ type AccountService interface {
 type AccountRepository interface {
 	Save(account *Account) (*Account, error)
 	FindAll() ([]Account, error)
-	Delete(account *Account) error
+	Delete(account *Account) error 
 	Migrate() error
 }

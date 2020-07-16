@@ -8,7 +8,7 @@ import (
 type Book struct {
 	gorm.Model
 	ID int64 `json:"id"`
-	Title string `json:"title"`
+	Title string `json:"title"; gorm:"size:255";`
 	
 	//association for book belongs to author
 	AuthorID int 
