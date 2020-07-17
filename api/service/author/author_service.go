@@ -43,3 +43,13 @@ func (a *authorService) Delete(author *model.Author) error {
 func (a *authorService) FindById(id int64) ([]model.Author, error) {
 	return a.authorRepository.FindById(id)
 }
+
+//Author count
+func (a *authorService) GetTotalNumberOfAuthors() (int64, error) {
+	return a.authorRepository.TotalNumberOfAuthors()
+}
+
+//Authors name list
+func (a *authorService) GetAuthorsNameList() ([]string, error) {
+	return a.authorRepository.AllAuthorsNameList()
+}

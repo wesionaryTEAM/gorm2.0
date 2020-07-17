@@ -13,6 +13,8 @@ type AuthorController interface {
 	AddAuthor(c *gin.Context)
 	DeleteAuthor(c *gin.Context)
 	FindById (c *gin.Context)
+	GetTotalNumberOfAuthors(c *gin.Context)
+	GetAuthorsNameList(c *gin.Context)
 }
 
 type authorController struct {
@@ -81,3 +83,24 @@ func (a *authorController) FindById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, author)
 }
+
+//Get total count of authors
+func (a *authorController)	GetTotalNumberOfAuthors(c *gin.Context) {
+	count, err := a.authorService.GetTotalNumberOfAuthors()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return 
+	}
+	c.JSON(http.StatusOK, gin.H{"count": count})
+}
+
+//Get the list of authors
+func (a *authorController) GetAuthorsNameList(c *gin.Context) {
+	NameList, err := a.authorService.GetAuthorsNameList()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"NameList": NameList})
+}
+

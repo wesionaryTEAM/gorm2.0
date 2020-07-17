@@ -37,10 +37,23 @@ func (a *AuthorRepository) 	Delete (author *model.Author) error {
 func (a *AuthorRepository) FindById(id int64) ([]model.Author, error) {
 	var author []model.Author
 	err := a.DB.Where("id = ?", id).Find(&author).Error
-	// if err != nil {
-	// 	return nil, err
-	// }
 	return author, err
+}
+
+//Count the author's total number
+func (a *AuthorRepository) TotalNumberOfAuthors() (int64, error) {
+	var count int64
+	err := a.DB.Table("authors").Count(&count).Error
+	// err := a.DB.Model(&Authors{}).Count(&count).Error
+	return count, err
+}
+
+//Pluck author's names only
+func (a *AuthorRepository) AllAuthorsNameList() ([]string, error) {
+	var names []string
+	err := a.DB.Table("authors").Pluck("name", &names).Error
+	// err := a.DB.Model(&Authors{}).Pluck("name", &names).Error
+	return names, err
 }
 
 //Migrate

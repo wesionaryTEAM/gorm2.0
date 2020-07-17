@@ -15,6 +15,8 @@ type AuthorService interface {
 	FindAll() ([]Author, error)
 	Delete(author *Author) error
 	FindById(id int64) ([]Author, error)
+	GetTotalNumberOfAuthors() (int64, error)
+	GetAuthorsNameList() ([]string, error) 
 }
 
 type AuthorRepository interface {
@@ -22,5 +24,7 @@ type AuthorRepository interface {
 	FindAll() ([]Author, error)
 	Delete (author *Author) error
 	FindById(id int64) ([]Author, error)
+	TotalNumberOfAuthors() (int64, error)
+	AllAuthorsNameList() ([]string, error)
 	Migrate() error
 }

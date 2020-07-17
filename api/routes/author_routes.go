@@ -22,6 +22,8 @@ func AuthorRoutes(route *gin.RouterGroup, db *gorm.DB) {
 
 	//Routes
 	route.GET("/", authorController.GetAuthors)
+	route.GET("/getTotalAuthorCount", authorController.GetTotalNumberOfAuthors)
+	route.GET("/getAuthorsNameList", authorController.GetAuthorsNameList)
 	route.POST("/", authorController.AddAuthor)
 	route.POST("/findById", authorController.FindById)
 	route.DELETE("/", authorController.DeleteAuthor)
