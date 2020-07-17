@@ -44,7 +44,6 @@ func (a *AuthorRepository) FindById(id int64) ([]model.Author, error) {
 func (a *AuthorRepository) TotalNumberOfAuthors() (int64, error) {
 	var count int64
 	err := a.DB.Table("authors").Count(&count).Error
-	// err := a.DB.Model(&Authors{}).Count(&count).Error
 	return count, err
 }
 
@@ -52,7 +51,6 @@ func (a *AuthorRepository) TotalNumberOfAuthors() (int64, error) {
 func (a *AuthorRepository) AllAuthorsNameList() ([]string, error) {
 	var names []string
 	err := a.DB.Table("authors").Pluck("name", &names).Error
-	// err := a.DB.Model(&Authors{}).Pluck("name", &names).Error
 	return names, err
 }
 
