@@ -1,0 +1,97 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      # specify the version
+      - image: circleci/golang:1.14
+
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
+    
+    environment: # environment variables for the build itself
+      TEST_RESULTS: /tmp/test-results # path to where test results will be saved
+
+    working_directory: /go/src/github.com/sujal.kokh/gorm2.0
+
+    steps:
+      - checkout
+
+      - run: mkdir -p $TEST_RESULTS # create the test results directory
+
+      - restore_cache: # restores saved cache if no changes are detected since last run
+          keys:
+            - go-mod-v4-{{ checksum "go.sum" }}
+
+      - run:
+        # Our primary container isn't MYSQL so run a sleep command until it's ready.
+            name: Waiting for MySQL to be ready
+            command: |
+              for i in `seq 1 10`;
+              do
+                nc -z 127.0.0.1 3306 && echo Success && exit 0
+                echo -n .
+                sleep 1
+              done
+              echo Failed waiting for MySQL && exit 1
+
+      - run:
+          name: Run unit tests
+          environment: # environment variables for the database url and path to migration files
+            CONTACTS_DB_URL: "user:passw0rd@tcp(localhost:3306)/test_db?charset=utf8&parseTime=True&loc=Local"
+            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+
+          # store the results of our tests in the $TEST_RESULTS directory
+          command: |
+            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+            gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
+      
+      - run: 
+          name: Build the golang project  
+          command: go build
+      
+      - save_cache:
+                  key: go-mod-v4-{{ checksum "go.sum" }}
+                  paths:
+                    - "/go/pkg/mod"
+
+      - run:
+          name: Start service
+          environment:
+            DB_HOST: "localhost"
+            DB_PORT: "3306"
+            DB_NAME: "gorm_two"
+            DB_USER: "root"
+            DB_PASS: "password"
+            # CONTACTS_DB_URL: "user:passw0rd@tcp(localhost:3306)/test_db?charset=utf8&parseTime=True&loc=Local"
+            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+          command: ./gorm2.0
+          background: true # keep service running and proceed to next step
+
+      - run:
+          name: Validate service is working
+          command: |
+            sleep 5
+            curl http://localhost:8000
+
+      - store_artifacts: # upload test summary for display in Artifacts
+          path: /tmp/test-results
+          destination: raw-test-output
+      
+      - store_test_results: # upload test results for display in Test Summary
+          path: /tmp/test-results
+      
+
+      # # specify any bash command here prefixed with `run: `
+      # - run: go get -v -t -d ./...
+      # - run: go test -v ./...
+
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - build

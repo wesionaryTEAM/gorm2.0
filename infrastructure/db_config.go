@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"gorm.io/driver/mysql"
-  "gorm.io/gorm"
+	"gorm.io/gorm"
 	"gorm2.0/utils"
 )
 
@@ -16,6 +16,11 @@ func GetDatabaseInstance() *gorm.DB {
 	HOST := get("DB_HOST")
 	PORT := get("DB_PORT")
 	DBNAME := get("DB_NAME")
+
+	createDBDsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/", USER, PASS, HOST, PORT)
+	database, err := gorm.Open(mysql.Open(createDBDsn), &gorm.Config{})
+
+	_ = database.Exec("CREATE DATABASE IF NOT EXISTS " + DBNAME + ";")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", USER, PASS, HOST, PORT, DBNAME)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
