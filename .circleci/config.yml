@@ -6,13 +6,12 @@ jobs:
       # specify the version
       - image: circleci/golang:1.14
 
-      # CircleCI Mysql images available at: https://hub.docker.com/r/circleci/mysql/
       - image: circleci/mysql:8.0.4
         environment:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: gorm_two
-          MYSQL_USER: root
-          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
     
     environment: # environment variables for the build itself
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved
@@ -27,24 +26,16 @@ jobs:
       - restore_cache: # restores saved cache if no changes are detected since last run
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-      
-      - run:
-        # Our primary container isn't MYSQL so run a sleep command until it's ready.
-            name: Waiting for MySQL to be ready
-            command: |
-              for i in `seq 1 10`;
-              do
-                nc -z 127.0.0.1 3306 && echo Success && exit 0
-                echo -n .
-                sleep 1
-              done
-              echo Failed waiting for MySQL && exit 1
 
-      - run:
-          name: Run unit tests
-          environment: # environment variables for the database url and path to migration files
-            CONTACTS_DB_URL: "root:password@tcp(localhost:3306)/gorm_two?charset=utf8&parseTime=True&loc=Local"
-            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+      # - run:
+      #     name: Waiting for Postgres to be ready
+      #     command: dockerize -wait tcp://localhost:5432 -timeout 1m
+    
+      # - run:
+      #     name: Run unit tests
+      #     environment: # environment variables for the database url and path to migration files
+      #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
+      #       CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
 
           # store the results of our tests in the $TEST_RESULTS directory
           command: |
@@ -63,7 +54,7 @@ jobs:
       - run:
           name: Start service
           environment:
-            CONTACTS_DB_URL: "root:password@tcp(localhost:3306)/gorm_two?charset=utf8&parseTime=True&loc=Local"
+            # CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
             CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
           command: ./gorm2.0
           background: true # keep service running and proceed to next step
@@ -91,4 +82,3 @@ workflows:
   build-workflow:
     jobs:
       - build
-      
