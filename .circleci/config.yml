@@ -8,10 +8,10 @@ jobs:
 
       - image: circleci/mysql:8.0.4
         environment:
-          MYSQL_ROOT_PASSWORD: rootpw
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: gorm_two
+          MYSQL_USER: root
+          MYSQL_PASSWORD: password
     
     environment: # environment variables for the build itself
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved
@@ -39,16 +39,16 @@ jobs:
               done
               echo Failed waiting for MySQL && exit 1
     
-      # - run:
-      #     name: Run unit tests
-      #     environment: # environment variables for the database url and path to migration files
-      #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-      #       CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+      - run:
+          name: Run unit tests
+          environment: # environment variables for the database url and path to migration files
+            CONTACTS_DB_URL: "root:password@tcp(localhost:3306)/gorm_two?charset=utf8&parseTime=True&loc=Local"
+            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
 
-      #     # store the results of our tests in the $TEST_RESULTS directory
-      #     command: |
-      #       PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
-      #       gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
+          # store the results of our tests in the $TEST_RESULTS directory
+          command: |
+            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+            gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
       
       - run: 
           name: Build the golang project  
