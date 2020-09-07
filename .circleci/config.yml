@@ -39,6 +39,14 @@ jobs:
               done
               echo Failed waiting for MySQL && exit 1
 
+      # Import DB Dump
+      - run:
+        name: Install mysql client
+        command: |
+          sudo apt-get install mysql-client
+          mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
+
+
       - run:
           name: Run unit tests
           environment: # environment variables for the database url and path to migration files
