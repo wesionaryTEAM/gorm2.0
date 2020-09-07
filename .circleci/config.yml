@@ -27,9 +27,17 @@ jobs:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
 
-      # - run:
-      #     name: Waiting for Postgres to be ready
-      #     command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+        # Our primary container isn't MYSQL so run a sleep command until it's ready.
+            name: Waiting for MySQL to be ready
+            command: |
+              for i in `seq 1 10`;
+              do
+                nc -z 127.0.0.1 3306 && echo Success && exit 0
+                echo -n .
+                sleep 1
+              done
+              echo Failed waiting for MySQL && exit 1
     
       # - run:
       #     name: Run unit tests
@@ -37,10 +45,10 @@ jobs:
       #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
       #       CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
 
-          # store the results of our tests in the $TEST_RESULTS directory
-          command: |
-            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
-            gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
+      #     # store the results of our tests in the $TEST_RESULTS directory
+      #     command: |
+      #       PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+      #       gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
       
       - run: 
           name: Build the golang project  
@@ -51,26 +59,26 @@ jobs:
                   paths:
                     - "/go/pkg/mod"
 
-      - run:
-          name: Start service
-          environment:
-            # CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
-          command: ./gorm2.0
-          background: true # keep service running and proceed to next step
+      # - run:
+      #     name: Start service
+      #     environment:
+      #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
+      #       CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+      #     command: ./gorm2.0
+      #     background: true # keep service running and proceed to next step
 
-      - run:
-          name: Validate service is working
-          command: |
-            sleep 5
-            curl http://localhost:8000
+      # - run:
+      #     name: Validate service is working
+      #     command: |
+      #       sleep 5
+      #       curl http://localhost:8000
 
-      - store_artifacts: # upload test summary for display in Artifacts
-          path: /tmp/test-results
-          destination: raw-test-output
+      # - store_artifacts: # upload test summary for display in Artifacts
+      #     path: /tmp/test-results
+      #     destination: raw-test-output
       
-      - store_test_results: # upload test results for display in Test Summary
-          path: /tmp/test-results
+      # - store_test_results: # upload test results for display in Test Summary
+      #     path: /tmp/test-results
       
 
       # # specify any bash command here prefixed with `run: `
