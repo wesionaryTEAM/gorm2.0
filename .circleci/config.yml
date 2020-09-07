@@ -59,26 +59,26 @@ jobs:
                   paths:
                     - "/go/pkg/mod"
 
-      # - run:
-      #     name: Start service
-      #     environment:
-      #       CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-      #       CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
-      #     command: ./gorm2.0
-      #     background: true # keep service running and proceed to next step
+      - run:
+          name: Start service
+          environment:
+            CONTACTS_DB_URL: "user:passw0rd@tcp(localhost:3306)/test_db?charset=utf8&parseTime=True&loc=Local"
+            CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
+          command: ./gorm2.0
+          background: true # keep service running and proceed to next step
 
-      # - run:
-      #     name: Validate service is working
-      #     command: |
-      #       sleep 5
-      #       curl http://localhost:8000
+      - run:
+          name: Validate service is working
+          command: |
+            sleep 5
+            curl http://localhost:8000
 
-      # - store_artifacts: # upload test summary for display in Artifacts
-      #     path: /tmp/test-results
-      #     destination: raw-test-output
+      - store_artifacts: # upload test summary for display in Artifacts
+          path: /tmp/test-results
+          destination: raw-test-output
       
-      # - store_test_results: # upload test results for display in Test Summary
-      #     path: /tmp/test-results
+      - store_test_results: # upload test results for display in Test Summary
+          path: /tmp/test-results
       
 
       # # specify any bash command here prefixed with `run: `
