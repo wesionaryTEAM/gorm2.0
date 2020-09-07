@@ -39,12 +39,12 @@ jobs:
               done
               echo Failed waiting for MySQL && exit 1
 
-      # Import DB Dump
-      - run:
-          name: Install mysql client
-          command: |
-            sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
+      # # Import DB Dump
+      # - run:
+      #     name: Install mysql client
+      #     command: |
+      #       apt-get install default-mysql-client
+      #       mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
 
 
       - run:
