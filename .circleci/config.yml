@@ -6,9 +6,9 @@ jobs:
       # specify the version
       - image: circleci/golang:1.14
 
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mysql:5.7-ram
         environment:
-          MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test_db
           MYSQL_USER: user
           MYSQL_PASSWORD: passw0rd
@@ -38,7 +38,9 @@ jobs:
                 sleep 1
               done
               echo Failed waiting for MySQL && exit 1
-    
+
+      - run: mysqladmin create gorm_two --host="127.0.0.1" --user="root" --password="password"
+
       - run:
           name: Run unit tests
           environment: # environment variables for the database url and path to migration files
