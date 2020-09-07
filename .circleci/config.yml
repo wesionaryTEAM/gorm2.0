@@ -39,14 +39,6 @@ jobs:
               done
               echo Failed waiting for MySQL && exit 1
 
-      # # Import DB Dump
-      # - run:
-      #     name: Install mysql client
-      #     command: |
-      #       apt-get install default-mysql-client
-      #       mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
-
-
       - run:
           name: Run unit tests
           environment: # environment variables for the database url and path to migration files
@@ -80,11 +72,11 @@ jobs:
           command: ./gorm2.0
           background: true # keep service running and proceed to next step
 
-      # - run:
-      #     name: Validate service is working
-      #     command: |
-      #       sleep 5
-      #       curl http://localhost:8000
+      - run:
+          name: Validate service is working
+          command: |
+            sleep 5
+            curl http://localhost:8000
 
       - store_artifacts: # upload test summary for display in Artifacts
           path: /tmp/test-results
