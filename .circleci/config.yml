@@ -67,7 +67,7 @@ jobs:
             DB_NAME: "gorm_two"
             DB_USER: "root"
             DB_PASS: "password"
-            CONTACTS_DB_URL: "user:passw0rd@tcp(localhost:3306)/test_db?charset=utf8&parseTime=True&loc=Local"
+            # CONTACTS_DB_URL: "user:passw0rd@tcp(localhost:3306)/test_db?charset=utf8&parseTime=True&loc=Local"
             CONTACTS_DB_MIGRATIONS: /home/circleci/project/db/migrations
           command: ./gorm2.0
           background: true # keep service running and proceed to next step
