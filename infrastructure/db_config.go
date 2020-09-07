@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"gorm.io/driver/mysql"
-  "gorm.io/gorm"
+	"gorm.io/gorm"
 	"gorm2.0/utils"
 )
 

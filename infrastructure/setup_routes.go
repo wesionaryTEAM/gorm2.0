@@ -5,12 +5,11 @@ import (
 	"os"
 
 	// "gorm2.0/api/routes"
-	router "gorm2.0/http"
-	"gorm2.0/api/routes"
 	"github.com/gin-gonic/gin"
-  "gorm.io/gorm"
+	"gorm.io/gorm"
+	"gorm2.0/api/routes"
+	router "gorm2.0/http"
 )
-
 
 //Setup routes
 func SetupRoutes(db *gorm.DB) {
@@ -21,7 +20,7 @@ func SetupRoutes(db *gorm.DB) {
 	})
 
 	// Author Routers
-	routes.AuthorRoutes(httpRouter.GROUP("/authors"),db)
+	routes.AuthorRoutes(httpRouter.GROUP("/authors"), db)
 
 	// Book routes
 	routes.BookRoutes(httpRouter.GROUP("/books"), db)
