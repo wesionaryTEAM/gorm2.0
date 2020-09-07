@@ -21,8 +21,6 @@ jobs:
     steps:
       - checkout
 
-      - run: sudo apt-get install mysql-client
-
       - run: mkdir -p $TEST_RESULTS # create the test results directory
 
       - restore_cache: # restores saved cache if no changes are detected since last run
@@ -40,8 +38,6 @@ jobs:
                 sleep 1
               done
               echo Failed waiting for MySQL && exit 1
-
-      - run: mysqladmin create gorm_two --host="127.0.0.1" --user="root" --password="password"
 
       - run:
           name: Run unit tests
