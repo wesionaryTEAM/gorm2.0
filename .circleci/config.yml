@@ -41,10 +41,10 @@ jobs:
 
       # Import DB Dump
       - run:
-        name: Install mysql client
-        command: |
-          sudo apt-get install mysql-client
-          mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
+          name: Install mysql client
+          command: |
+            sudo apt-get install mysql-client
+            mysql -h 127.0.0.1 -u root -p password --execute="CREATE DATABASE gorm_two"
 
 
       - run:
