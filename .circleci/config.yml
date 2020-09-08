@@ -33,6 +33,11 @@ jobs:
           command: |
             cat serviceAccountKey.json
 
+      - run:
+          name: Check the other files in the directory
+          command: |
+            ls
+
 
       - restore_cache: # restores saved cache if no changes are detected since last run
           keys:
