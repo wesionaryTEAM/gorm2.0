@@ -23,6 +23,17 @@ jobs:
 
       - run: mkdir -p $TEST_RESULTS # create the test results directory
 
+      - run: 
+          name: Create firebase Service Account Key files
+          command: |
+            echo "{\n\t\"type\": \"xxxxxxx\",\n\t\"project_id\": \"xxxxxx\",\n\t\"private_key_id\": \"xxxxxx\",\n\t\"private_key\": \"xxxxxx\",\n\t\"client_email\": \"xxxxxxx\",\n\t\"client_id\": \"xxxxx\",\n\t\"auth_url\": \"xxxxx\",\n\t\"token_uri\": \"xxxxxxx\",\n\t\"auth_provider_x509_cert_url\": \"xxxxxxxxx\",\n\t\"client_x509_cert_url\": \"xxxxxxxxx\"\n}" > serviceAccountKey.json
+      
+      - run:
+          name: Check the creation of the firebase Service Account Key files
+          command: |
+            cat serviceAccountKey.json
+
+
       - restore_cache: # restores saved cache if no changes are detected since last run
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
