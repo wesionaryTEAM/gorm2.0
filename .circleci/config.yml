@@ -23,6 +23,16 @@ jobs:
 
       - run: mkdir -p $TEST_RESULTS # create the test results directory
 
+      - run:
+          name: Run unit test and generate coverage reports
+          command: |
+            go test -race -covermode=atomic -coverprofile=coverage.txt
+            gocov convert coverage.txt | gocov-xml > coverage.xml
+            bash <(curl -s https://codecov.io/bash) -f coverage.xml -t 07c8d869-e98f-4091-b67c-ca3b9525ff52
+            
+      - codecov/upload:
+          file: {{ coverage.xml }}
+
       - run: 
           name: Create firebase Service Account Key files
           command: |
@@ -106,7 +116,9 @@ jobs:
       # - run: go get -v -t -d ./...
       # - run: go test -v ./...
 
-      
+orbs: 
+  codecov: codecov/codecov@1.1.1
+
 workflows:
   version: 2
   build-workflow:
