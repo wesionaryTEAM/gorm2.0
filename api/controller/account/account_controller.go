@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,7 @@ func NewAccountController(service model.AccountService) AccountController {
 
 //GET
 func (a *accountController) GetAccounts(c *gin.Context) {
+	fmt.Sprintf("Into the GetAccounts controller")
 	accounts, err := a.accountService.FindAll()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error while fetching the accounts"})
@@ -54,10 +56,10 @@ func (a *accountController) DeleteAccount(c *gin.Context) {
 	if err := c.ShouldBindJSON(&account); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	} 
+	}
 
 	ErrOnDelete := a.accountService.Delete(&account)
-	if ErrOnDelete!= nil {
+	if ErrOnDelete != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Could not delete the account"})
 		return
 	}
