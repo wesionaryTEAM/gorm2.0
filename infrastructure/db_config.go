@@ -23,6 +23,7 @@ func GetDatabaseInstance() *gorm.DB {
 	_ = database.Exec("CREATE DATABASE IF NOT EXISTS " + DBNAME + ";")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", USER, PASS, HOST, PORT, DBNAME)
+	fmt.Println("The DSN is:::", dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
