@@ -50,6 +50,7 @@ jobs:
           DB_PASS=${{secrets.DB_PASSWORD}}
           DB_TYPE=${{secrets.DB_TYPE}}
           REDIS_HOST=${{secrets.REDIS_HOST}}
+          ENVIRONMENT=${{secrets.ENVIRONMENT}}
           "> .env
 
       - name: Use golang ${{matrix.go-version}}

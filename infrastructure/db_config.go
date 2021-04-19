@@ -16,6 +16,7 @@ func GetDatabaseInstance() *gorm.DB {
 	HOST := get("DB_HOST")
 	PORT := get("DB_PORT")
 	DBNAME := get("DB_NAME")
+	ENVIRONMENT := get("ENVIRONMENT")
 
 	createDBDsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/", USER, PASS, HOST, PORT)
 	database, err := gorm.Open(mysql.Open(createDBDsn), &gorm.Config{})
@@ -23,6 +24,17 @@ func GetDatabaseInstance() *gorm.DB {
 	_ = database.Exec("CREATE DATABASE IF NOT EXISTS " + DBNAME + ";")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", USER, PASS, HOST, PORT, DBNAME)
+
+	if ENVIRONMENT != "local" {
+		dsn = fmt.Sprintf(
+			"%s:%s@unix(/cloudsql/%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			USER,
+			PASS,
+			HOST,
+			DBNAME,
+		)
+	}
+
 	fmt.Println("The DSN is:::", dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
