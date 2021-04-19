@@ -1,7 +1,7 @@
 name: Build golang application
 
 on:
-  pull_requests:
+  pull_request:
     branches:
       - develop
       - master
