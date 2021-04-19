@@ -41,6 +41,17 @@ jobs:
         run: |
           sudo apt-get install google-cloud-sdk-app-engine-go
 
+      - name: Make env variable file
+        run: |
+          echo "DB_HOST=${{secrets.DB_HOST}}
+          DB_PORT=${{secrets.DB_HOST}}
+          DB_NAME=${{secrets.DB_NAME}}
+          DB_USERNAME=${{secrets.DB_USERNAME}}
+          DB_PASSWORD=${{secrets.DB_PASSWORD}}
+          DB_TYPE=${{secrets.DB_TYPE}}
+          REDIS_HOST=${{secrets.REDIS_HOST}}
+          "> .env
+
       - name: Use golang ${{matrix.go-version}}
         uses: actions/setup-go@v2
         with:
