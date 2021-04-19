@@ -36,6 +36,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install dependency for google cloud SDK
+        run: |
+          sudo apt-get install google-cloud-sdk-app-engine-go
+
       - name: Use golang ${{matrix.go-version}}
         uses: actions/setup-go@v2
         with:
