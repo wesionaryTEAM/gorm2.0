@@ -36,23 +36,22 @@ jobs:
 
       steps:
         - uses: actions/checkout@v2
+        - name: Use golang ${{matrix.go-version}}
+          uses: actions/setup-go@v2
+          with:
+            go-version: '^1.13.1'
+        - run: go version
 
-      - name: Use golang ${{matrix.go-version}}
-        uses: actions/setup-go@v2
-        with:
-          go-version: '^1.13.1'
-      - run: go version
 
+        - name: Initialize Google Cloud SDK
+          uses: zxyle/publish-gae-action@master
+          with:
+            service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+            project_id: ${{ secrets.PROJECT_ID }}
 
-      - name: Initialize Google Cloud SDK
-        uses: zxyle/publish-gae-action@master
-        with:
-          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: ${{ secrets.PROJECT_ID }}
-
-      - name: Deploy to Google App engine
-        run: |
-          gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=client-secret.json
-          gcloud config set project ${{ secrets.PROJECT_ID }}
-          gcloud app deploy app.yaml --quite --project ${{secrets.PROJECT_ID}}
+        - name: Deploy to Google App engine
+          run: |
+            gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=client-secret.json
+            gcloud config set project ${{ secrets.PROJECT_ID }}
+            gcloud app deploy app.yaml --quite --project ${{secrets.PROJECT_ID}}
