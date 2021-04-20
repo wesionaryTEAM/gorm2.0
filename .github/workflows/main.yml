@@ -1,14 +1,12 @@
-name: Build golang application
+name: Build and deploy golang application
 
 on:
   pull_request:
     branches:
       - develop
-      - master
   push:
     branches:
       - master
-      - develop
 
 jobs: 
   build:

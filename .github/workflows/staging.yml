@@ -24,4 +24,4 @@ jobs:
 
       - name: Build the repository
         run: |
-          go build server.go
+          go build server.go 
