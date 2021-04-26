@@ -27,13 +27,12 @@ jobs:
         run: |
           go build server.go
 
-      - uses: craftech-io/slack-action@v1
+      - name: Slack Notification
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          slack_channel: general
-          slack_username: Github
-          status: failure
-        if: failure()
+          text: Hello, Slack!
 
   deploy:
     name: Deploy the repository to google app engine
