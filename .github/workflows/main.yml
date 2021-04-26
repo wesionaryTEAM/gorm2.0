@@ -70,7 +70,7 @@ jobs:
           attachments: |
             [
               {
-                "color": "red",
+                "color": "bad",
                 "author_name": "${{ github.actor }}",
                 "author_icon": "${{ github.event.sender.avatar_url }}",
                 "fields": [
