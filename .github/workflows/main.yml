@@ -35,9 +35,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependency for google cloud SDK
-        run: |
-          sudo apt-get install google-cloud-sdk-app-engine-go
+      # - name: Install dependency for google cloud SDK
+      #   run: |
+      #     sudo apt-get install google-cloud-sdk-app-engine-go
 
       - name: Make env variable file
         run: |
