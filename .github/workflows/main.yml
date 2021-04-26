@@ -36,7 +36,7 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: A build job has succeeded :tada:
+          text: A build job has succeeded :tada:.
           attachments: |
             [
               {
@@ -66,7 +66,7 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: A job has failed :crying_cat_face:
+          text: A job has failed :crying_cat_face:.
           attachments: |
             [
               {
