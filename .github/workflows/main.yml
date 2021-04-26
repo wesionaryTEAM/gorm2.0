@@ -32,7 +32,7 @@ jobs:
         id: notify
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-channel: C01CDTTEMMH #USE CHANNEL ID, NOT CHANNEL NAME, SINCE ID IS USED IN NEW SLACK API's 
+          slack-channel: C01CDTTEMMH #USE CHANNEL ID, NOT CHANNEL NAME, SINCE ID IS USED IN NEW SLACK API's
           slack-text: Hello! Something is burning! Or not...
           slack-optional-icon_emoji: ":fire:"
           slack-optional-as_user: false
